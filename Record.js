@@ -9,10 +9,9 @@ export default class Record {
 	constructor(invoker, name){
 		this._record = {
 			userId: invoker._id || invoker.userId || null,
-			action: name,
+			type: name,
 			createdAt: new Date(),
 			_id: Random.id(),
-			app: "customer",
 			details:{}
 		}
 	}
@@ -32,6 +31,7 @@ export default class Record {
 		r.savedAt = new Date();
 		r.lifetime = r.savedAt - r.createdAt;
 		Records.insert(r);
+		return toClient;
 	}
 
 }
@@ -41,8 +41,7 @@ Meteor.trackedMethods = function(methods){
 		methods[name] = function(...a){
 			let record = new Record(this,name);
 			let sendToClient = fn.apply(this,[...a, record]);
-			record.save(sendToClient);
-			return sendToClient;
+			return record.save(sendToClient);
 		}
 	})
 	this.methods(methods);
