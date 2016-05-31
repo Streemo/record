@@ -1,13 +1,11 @@
 #Track what happens on your server.
-This is a small package (~40 lines) which gives you a very simple way to track events, data, and metadata in an organized way on your server.
+Track events, data, and metadata in an organized way on your server.
 ###Automatic user tracking
 Exposes `Meteor.trackedMethods`, used exactly how you would use regular methods.
 ```
 //client
 Meteor.call('rate-post', postId, rating)
-```
 
-```
 //server
 Meteor.trackedMethods({
 	rate-post: function(postId, rating, record){
@@ -17,44 +15,24 @@ Meteor.trackedMethods({
 		return optionalSuccessMessageToUser;
 	}
 })
-
-//later, something like this will be added to your database:
-Records.findOne()
-/*
-{
-	action: 'rate-post',
-	createdAt: [Date],
-	details: {
-		user: [Id],
-		ratedPost: [Id],
-		likedPost [Boolean]
-	},
-	savedAt: [Date],
-	returnedToClient: optionalSuccessMessageToUser
-}
-*/
 ```
 
 ###Neural network example
-Manually track anything, anywhere, from user to machine behavior, or logs, or whatever (can do this with or without `Meteor.trackedMethods`):
-`Record` takes an invoker, and a record name. Invoker can be `this` of a method/publisher, or some object which contains an `_id` or `userId` field.
+`Record` takes an invoker, and a record type. Invoker can be `this` of a method/publisher, or some object which contains an `_id` or `userId` field.
 
 ```
 import Record from "meteor/streemo:record";
 
-//in method
+//could also be a trackedMethod (see above), then you don't have to call record.save
+//as this happens automatically in trackedMethods
+
 Meteor.methods({
 	'buy-item': function(routeHistory, itemId){
 		let record = new Record(this, 'neural-network-data');
 		record.track({input: routeHistory, output: itemId});
 		let item = Items.findOne(itemId);
 		braintreeChargeCard(item, this.userId);
-		sendConfirmationEmail(item, this.userId);
 		return record.save({thisGetsReturnedToClient: "You successfully placed an order!"});
 	}
 })
-```
-```
-//one week later
-let trainingData = db.records.find({type: "neural-network-data"}, {"details.input":1, "details.output":1})
 ```
