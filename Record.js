@@ -1,9 +1,9 @@
 import { Meteor } from "meteor/meteor";
-import { Collection } from "meteor/mongo";
+import { Mongo } from "meteor/mongo";
 import { _ } from "meteor/underscore";
 import { Random } from "meteor/random";
 
-let Records = new Collection('records');
+let Records = new Mongo.Collection('records');
 
 export default class Record {
 	constructor(invoker, name){
