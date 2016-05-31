@@ -1,4 +1,6 @@
-#Automatic user tracking
+#Track what happens on your server.
+This is a small package (~40 lines) which gives you a very simple way to track events, data, and metadata in an organized way on your server.
+###Automatic user tracking
 Exposes `Meteor.trackedMethods`, used exactly how you would use regular methods.
 ```
 //client
@@ -33,7 +35,7 @@ Records.findOne()
 */
 ```
 
-#Neural network example
+###Neural network example
 Manually track anything, anywhere, from user to machine behavior, or logs, or whatever (can do this with or without `Meteor.trackedMethods`):
 `Record` takes an invoker, and a record name. Invoker can be `this` of a method/publisher, or some object which contains an `_id` or `userId` field.
 
