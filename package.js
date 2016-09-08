@@ -1,6 +1,6 @@
 Package.describe({
   name: 'streemo:record',
-  version: '0.0.9',
+  version: '0.0.10',
   // Brief, one-line summary of the package.
   summary: 'Keep mongo records of everything that happens on your servers.',
   // URL to the Git repository containing the source code for this package.

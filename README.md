@@ -6,7 +6,7 @@ Exposes `Meteor.trackedMethods`, used like how you would use regular methods.
 ### Record methods
 ```
 //record is an instance of Record
-//record is available as the last argument to all trackedMethods.
+//record is available as the first argument to all trackedMethods.
 
 record.getDate() // returns the Datetime the method handler was invoked on.
 record.discard() // call this to tell the handler to NOT save the record when it's done.
@@ -24,7 +24,7 @@ const defaultOpts = {
   appName: "app"
 }
 Meteor.trackedMethods(defaultOpts, {
-	rate-post: function(postId, rating, record){
+	rate-post: function(record, postId, rating){
 	  let liked = rating > 6;
     //get the date of the record's creation
     let oneHour = record.getDate().getTime() + 3600000

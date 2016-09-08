@@ -39,7 +39,7 @@ retry@1.0.7
 routepolicy@1.0.10
 spacebars@1.0.11
 spacebars-compiler@1.0.11
-streemo:record@0.0.8
+streemo:record@0.0.9
 tracker@1.0.13
 ui@1.0.11
 underscore@1.0.8

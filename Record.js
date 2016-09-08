@@ -51,7 +51,7 @@ Meteor.trackedMethods = function(opts, methods){
 		methods[name] = function(...a){
 			let record = new Record(this,name,opts.appName || "app");
 			try {
-				let sendToClient = fn.apply(this,[...a, record]);
+				let sendToClient = fn.apply(this,[record, ...a]);
 				return record._save(sendToClient);
 			} catch (e){
 				record._save({error:e.error});
