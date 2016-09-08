@@ -1,7 +1,6 @@
 import { Meteor } from "meteor/meteor";
-import { Mongo } from "meteor/mongo";
-import { _ } from "meteor/underscore";
 import { Random } from "meteor/random";
+import { Mongo } from "meteor/mongo";
 
 let Records = new Mongo.Collection('records');
 
@@ -31,6 +30,7 @@ export default class Record {
 		r.savedAt = new Date();
 		r.lifetime = r.savedAt - r.createdAt;
 		Records.insert(r);
+		this._saved = true;
 		return toClient;
 	}
 

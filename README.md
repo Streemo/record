@@ -1,6 +1,6 @@
-#Track what happens on your server.
+# Track what happens on your server.
 Track events, data, and metadata in an organized way on your server.
-###Automatic user tracking
+### Automatic user tracking
 Exposes `Meteor.trackedMethods`, used exactly how you would use regular methods.
 ```
 //client
@@ -17,7 +17,7 @@ Meteor.trackedMethods({
 })
 ```
 
-###Neural network example
+### Neural network example
 `Record` takes an invoker, and a record type. Invoker can be `this` of a method/publisher, or some object which contains an `_id` or `userId` field.
 
 ```
