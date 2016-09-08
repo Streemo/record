@@ -1,38 +1,44 @@
 # Track what happens on your server.
 Track events, data, and metadata in an organized way on your server.
-### Automatic user tracking
-Exposes `Meteor.trackedMethods`, used exactly how you would use regular methods.
+## Automatic tracking of events.
+Exposes `Meteor.trackedMethods`, used like how you would use regular methods.
+
+### Record methods
+```
+//record is an instance of Record
+//record is available as the last argument to all trackedMethods.
+
+record.getDate() // returns the Datetime the method handler was invoked on.
+record.discard() // call this to tell the handler to NOT save the record when it's done.
+record.track(obj) // store a custom JSON obj in this record.
+```
+
+### Example
 ```
 //client
 Meteor.call('rate-post', postId, rating)
 
 //server
-Meteor.trackedMethods({
+const defaultOpts = {
+  debug: false, // if true, any error.error thrown in a trackedMethod will be logged
+  appName: "app"
+}
+Meteor.trackedMethods(defaultOpts, {
 	rate-post: function(postId, rating, record){
 	  let liked = rating > 6;
-		record.track({user: this.userId, ratedPost: postId, likedPost: liked})
+    //get the date of the record's creation
+    let oneHour = record.getDate().getTime() + 3600000
+		record.track({
+      user: this.userId, 
+      ratedPost: postId, 
+      likedPost: liked,
+      oneHourLater: oneHour
+    })
 		// some processing
+    // oops, we don't wanna save the record after discovering
+    // the user's karma is too low.
+    record.discard();
 		return optionalSuccessMessageToUser;
-	}
-})
-```
-
-### Neural network example
-`Record` takes an invoker, and a record type. Invoker can be `this` of a method/publisher, or some object which contains an `_id` or `userId` field.
-
-```
-import Record from "meteor/streemo:record";
-
-//could also be a trackedMethod (see above), then you don't have to call record.save
-//as this happens automatically in trackedMethods
-
-Meteor.methods({
-	'buy-item': function(routeHistory, itemId){
-		let record = new Record(this, 'neural-network-data');
-		record.track({input: routeHistory, output: itemId});
-		let item = Items.findOne(itemId);
-		braintreeChargeCard(item, this.userId);
-		return record.save({thisGetsReturnedToClient: "You successfully placed an order!"});
 	}
 })
 ```
