@@ -1,7 +1,8 @@
 import { Meteor } from "meteor/meteor";
 import { Random } from "meteor/random";
 import { Mongo } from "meteor/mongo";
-import { _ } from 
+import { _ } from "meteor/underscore";
+
 let Records = new Mongo.Collection('records');
 
 export default class Record {
